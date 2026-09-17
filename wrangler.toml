@@ -1,0 +1,16 @@
+name = "universal-api"
+main = "src/index.js"
+compatibility_date = "2026-09-17"
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+# =====================================================
+# CLOUDFLARE D1
+# Ganti dua nilai berikut dengan database D1 kamu.
+# =====================================================
+[[d1_databases]]
+binding = "DB"
+database_name = "sde-hvac-db"
+database_id = "d90191b3-a36a-49a9-b5bc-5601acf205c0"
