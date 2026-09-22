@@ -7,10 +7,17 @@ directory = "./public"
 binding = "ASSETS"
 
 # =====================================================
-# CLOUDFLARE D1
-# Ganti dua nilai berikut dengan database D1 kamu.
+# CLOUDFLARE D1 - HVAC / SENSOR
 # =====================================================
 [[d1_databases]]
-binding = "DB"
+binding = "db_hvac"
 database_name = "sde-hvac-db"
 database_id = "d90191b3-a36a-49a9-b5bc-5601acf205c0"
+
+# =====================================================
+# CLOUDFLARE D1 - ENERGY METER
+# =====================================================
+[[d1_databases]]
+binding = "db_em"
+database_name = "energy-meter"
+database_id = "84c74b9a-f1aa-4611-923f-9b15c2b0f022"
