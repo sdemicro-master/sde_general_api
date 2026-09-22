@@ -89,7 +89,7 @@ export default {
       url.pathname === "/api/sensor-data"
     ) {
       try {
-        const result = await env.DB_hvac.prepare(`
+        const result = await env.db_hvac.prepare(`
           SELECT
             id,
             device_id,
@@ -133,7 +133,7 @@ export default {
           }, 400);
         }
 
-        const result = await env.DB_hvac.prepare(`
+        const result = await env.db_hvac.prepare(`
           SELECT
             id,
             device_id,
@@ -211,7 +211,7 @@ export default {
           }, 400);
         }
 
-        const result = await env.DB_hvac.prepare(`
+        const result = await env.db_hvac.prepare(`
           INSERT INTO sensor_data
             (
               device_id,
@@ -256,7 +256,7 @@ export default {
       url.pathname === "/api/energy-meter"
     ) {
       try {
-        const result = await env.DB_em.prepare(`
+        const result = await env.db_em.prepare(`
           SELECT
             id,
             device_id,
@@ -301,7 +301,7 @@ export default {
           }, 400);
         }
 
-        const result = await env.DB_em.prepare(`
+        const result = await env.db_em.prepare(`
           SELECT
             id,
             device_id,
@@ -417,7 +417,7 @@ export default {
         // INSERT D1
         // -----------------------------
 
-        const result = await env.DB_em.prepare(`
+        const result = await env.db_em.prepare(`
           INSERT INTO "ENERGY_METER_01CL1"
           (
             device_id,
