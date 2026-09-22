@@ -265,7 +265,7 @@ export default {
             current,
             power,
             energy_kwh
-          FROM "energy-meter"
+          FROM "ENERGY_METER_01CL1"
           ORDER BY id DESC
         `).all();
 
@@ -310,7 +310,7 @@ export default {
             current,
             power,
             energy_kwh
-          FROM "energy-meter"
+          FROM "ENERGY_METER_01CL1"
           WHERE id = ?
         `).bind(id).first();
 
@@ -418,7 +418,7 @@ export default {
         // -----------------------------
 
         const result = await env.DB.prepare(`
-          INSERT INTO "energy-meter"
+          INSERT INTO "ENERGY_METER_01CL1"
           (
             device_id,
             voltage,
