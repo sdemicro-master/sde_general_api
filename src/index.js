@@ -417,7 +417,7 @@ export default {
   )
   VALUES (
     ?,
-    datetime('now'),
+   datetime('now', '+7 hours'),
     ?,
     ?,
     ?,
