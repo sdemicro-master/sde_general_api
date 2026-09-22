@@ -405,7 +405,7 @@ export default {
       }, 400);
     }
 
-    const result = await env.ENERGY_DB.prepare(`
+    const result = await env.db_em.prepare(`
       INSERT INTO "ENERGY_METER_01CL1"
       (
         device_id,
