@@ -338,129 +338,113 @@ export default {
     // =========================================================
     // POST /api/energy-meter
     // =========================================================
-    if (
-      request.method === "POST" &&
-      url.pathname === "/api/energy-meter"
-    ) {
-      try {
-        const body = await request.json();
+ if (
+  request.method === "POST" &&
+  url.pathname === "/api/energy-meter"
+) {
+  try {
+    const body = await request.json();
 
-        const {
-          device_id,
-          voltage,
-          current,
-          power,
-          energy_kwh
-        } = body;
+    const {
+      device_id,
+      voltage,
+      current,
+      power,
+      energy_kwh
+    } = body;
 
-        // -----------------------------
-        // Validasi
-        // -----------------------------
-
-        if (!device_id) {
-          return jsonResponse({
-            success: false,
-            message: "device_id wajib diisi"
-          }, 400);
-        }
-
-        if (voltage === undefined || voltage === null) {
-          return jsonResponse({
-            success: false,
-            message: "voltage wajib diisi"
-          }, 400);
-        }
-
-        if (current === undefined || current === null) {
-          return jsonResponse({
-            success: false,
-            message: "current wajib diisi"
-          }, 400);
-        }
-
-        if (power === undefined || power === null) {
-          return jsonResponse({
-            success: false,
-            message: "power wajib diisi"
-          }, 400);
-        }
-
-        if (energy_kwh === undefined || energy_kwh === null) {
-          return jsonResponse({
-            success: false,
-            message: "energy_kwh wajib diisi"
-          }, 400);
-        }
-
-        // -----------------------------
-        // Validasi angka
-        // -----------------------------
-
-        const voltageValue = Number(voltage);
-        const currentValue = Number(current);
-        const powerValue = Number(power);
-        const energyValue = Number(energy_kwh);
-
-        if (
-          !Number.isFinite(voltageValue) ||
-          !Number.isFinite(currentValue) ||
-          !Number.isFinite(powerValue) ||
-          !Number.isFinite(energyValue)
-        ) {
-          return jsonResponse({
-            success: false,
-            message: "voltage, current, power, dan energy_kwh harus berupa angka"
-          }, 400);
-        }
-
-        // -----------------------------
-        // INSERT D1
-        // -----------------------------
-
-        const result = await env.db_em.prepare(`
-          INSERT INTO "ENERGY_METER_01CL1"
-          (
-            device_id,
-            voltage,
-            current,
-            power,
-            energy_kwh
-          )
-          VALUES (?, ?, ?, ?, ?)
-        `).bind(
-          device_id,
-          voltageValue,
-          currentValue,
-          powerValue,
-          energyValue
-        ).run();
-
-        // -----------------------------
-        // Response
-        // -----------------------------
-
-        return jsonResponse({
-          success: true,
-          message: "Data energy meter berhasil disimpan",
-
-          data: {
-            id: result.meta.last_row_id,
-            device_id: device_id,
-            voltage: voltageValue,
-            current: currentValue,
-            power: powerValue,
-            energy_kwh: energyValue
-          }
-        }, 201);
-
-      } catch (error) {
-        return jsonResponse({
-          success: false,
-          message: "Gagal menyimpan data energy meter",
-          error: error.message
-        }, 500);
-      }
+    if (!device_id) {
+      return jsonResponse({
+        success: false,
+        message: "device_id wajib diisi"
+      }, 400);
     }
+
+    if (voltage === undefined || voltage === null) {
+      return jsonResponse({
+        success: false,
+        message: "voltage wajib diisi"
+      }, 400);
+    }
+
+    if (current === undefined || current === null) {
+      return jsonResponse({
+        success: false,
+        message: "current wajib diisi"
+      }, 400);
+    }
+
+    if (power === undefined || power === null) {
+      return jsonResponse({
+        success: false,
+        message: "power wajib diisi"
+      }, 400);
+    }
+
+    if (energy_kwh === undefined || energy_kwh === null) {
+      return jsonResponse({
+        success: false,
+        message: "energy_kwh wajib diisi"
+      }, 400);
+    }
+
+    const voltageValue = Number(voltage);
+    const currentValue = Number(current);
+    const powerValue = Number(power);
+    const energyValue = Number(energy_kwh);
+
+    if (
+      !Number.isFinite(voltageValue) ||
+      !Number.isFinite(currentValue) ||
+      !Number.isFinite(powerValue) ||
+      !Number.isFinite(energyValue)
+    ) {
+      return jsonResponse({
+        success: false,
+        message: "voltage, current, power, dan energy_kwh harus berupa angka"
+      }, 400);
+    }
+
+    const result = await env.ENERGY_DB.prepare(`
+      INSERT INTO "ENERGY_METER_01CL1"
+      (
+        device_id,
+        ts,
+        voltage,
+        current,
+        power,
+        energy_kwh
+      )
+      VALUES (?, CURRENT_TIMESTAMP, ?, ?, ?, ?)
+    `).bind(
+      device_id,
+      voltageValue,
+      currentValue,
+      powerValue,
+      energyValue
+    ).run();
+
+    return jsonResponse({
+      success: true,
+      message: "Data energy meter berhasil disimpan",
+      data: {
+        id: result.meta.last_row_id,
+        device_id,
+        voltage: voltageValue,
+        current: currentValue,
+        power: powerValue,
+        energy_kwh: energyValue
+      }
+    }, 201);
+
+  } catch (error) {
+    return jsonResponse({
+      success: false,
+      message: "Gagal menyimpan data energy meter",
+      error: error.message
+    }, 500);
+  }
+}
 
     // =========================================================
     // Frontend static files
