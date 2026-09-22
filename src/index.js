@@ -405,24 +405,31 @@ export default {
       }, 400);
     }
 
-    const result = await env.db_em.prepare(`
-      INSERT INTO "ENERGY_METER_01CL1"
-      (
-        device_id,
-        ts,
-        voltage,
-        current,
-        power,
-        energy_kwh
-      )
-      VALUES (?, CURRENT_TIMESTAMP, ?, ?, ?, ?)
-    `).bind(
-      device_id,
-      voltageValue,
-      currentValue,
-      powerValue,
-      energyValue
-    ).run();
+  const result = await env.db_em.prepare(`
+  INSERT INTO "ENERGY_METER_01CL1"
+  (
+    device_id,
+    ts,
+    voltage,
+    current,
+    power,
+    energy_kwh
+  )
+  VALUES (
+    ?,
+    datetime('now'),
+    ?,
+    ?,
+    ?,
+    ?
+  )
+`).bind(
+  device_id,
+  voltageValue,
+  currentValue,
+  powerValue,
+  energyValue
+).run();
 
     return jsonResponse({
       success: true,
